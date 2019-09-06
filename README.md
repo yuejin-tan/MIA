@@ -1,2 +1,2 @@
 # MIA
-MIA-Project for HUST maker
+MIA-Project for HUST maker project
