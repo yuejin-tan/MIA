@@ -18,7 +18,7 @@ extern U8G2_ST7920_128X64_1_8080 u8g2;
 
 char rhythmTab[6][21] = {{"                    "}, {"1.Syncopated        "}, {"2.8 AND 16          "}, {"3.Dotted            "}, {"4.Triplets          "}, {"                    "}};
 
-const unsigned int LastTimeTab[2][4] = {500, 500, 500, 500, 333, 667, 333, 667};
+const unsigned int LastTimeTab[2][4] = {500, 500, 500, 500, 667, 333, 667, 333};
 
 void Ukraini();
 void Tradition();
@@ -117,7 +117,7 @@ void Ukraini()
     uint8_t cnt = 0;
     uint8_t cnt1 = 0;
     unsigned long tempTime1;
-    unsigned long tempTime2;
+    double tempTime2;
     unsigned int angle;
     angle = 72;
     lcd1.noBlink();
@@ -151,13 +151,13 @@ void Ukraini()
         {
             lcd1.clear();
             lcd1.setCursor(0, 0);
-            lcd1.print(F("0.33s"));
+            lcd1.print(F("0.67s"));
             lcd1.setCursor(5, 1);
-            lcd1.print(F("0.67s"));
-            lcd1.setCursor(10, 2);
             lcd1.print(F("0.33s"));
-            lcd1.setCursor(15, 3);
+            lcd1.setCursor(10, 2);
             lcd1.print(F("0.67s"));
+            lcd1.setCursor(15, 3);
+            lcd1.print(F("0.33s"));
             choose = 1;
             break;
         }
@@ -198,7 +198,7 @@ void Ukraini()
 
             servo1.write(cnt1 < 24 ? (90 - angle / 2 + cnt1 * angle / 24) : (90 + angle * 3 / 2 - cnt1 * angle / 24));
             cnt1 = (cnt1 + 1) % 48;
-            tempTime2 += (LastTimeTab[choose][cnt1 / 24] / 24);
+            tempTime2 += (LastTimeTab[choose][cnt1 / 24] / 24.0);
             goto fuck07;
         }
 
@@ -495,6 +495,11 @@ void FileAddition()
                     rhythmNum = pubBuff[(rhythmPointer + i) * 2 + 1];
                     if (rhythmNum == 0)
                     {
+                        do{
+                            lcd1.print(F(" "));
+                            i++;
+                            lcd1.setCursor((i % 6) * 3 + 2, (i < 6 ? 2 : 3));
+                        }while(i<12);
                         break;
                     }
                     if (rhythmNum != 11)
